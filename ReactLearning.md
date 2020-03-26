@@ -119,4 +119,62 @@ package.json
      > https://www.cnblogs.com/flamestudio/p/11965991.html
    ```
 
+
+### 四、引入表单
+
+1. 使用 antd 中的表单组件，参考https://ant.design/components/form-cn/#components-form-demo-basic
+
+2. 更新为 antd 4.0+ 版本后对表单的处理
+
+   https://ant.design/components/form/v3-cn/
+
+   **onFinish 替代 onSubmit**
+
+   对于表单校验，过去版本需要通过监听 `onSubmit` 事件手工触发 `validateFields`。新版直接使用 `onFinish` 事件，该事件仅当校验通过后才会执行：
+
+   ```jsx
+   // antd v3
+   const Demo = ({ form: { getFieldDecorator, validateFields } }) => {
+     const onSubmit = e => {
+       e.preventDefault();
+       validateFields((err, values) => {
+         if (!err) {
+           console.log('Received values of form: ', values);
+         }
+       });
+     };
    
+     return (
+       <Form onSubmit={onSubmit}>
+         <Form.Item>
+           {getFieldDecorator('username', {
+             rules: [{ required: true }],
+           })(<Input />)}
+         </Form.Item>
+       </Form>
+     );
+   };
+   
+   const WrappedDemo = Form.create()(Demo);
+   ```
+
+   ```jsx
+   // antd v4
+   const Demo = () => {
+     const onFinish = values => {
+       console.log('Received values of form: ', values);
+     };
+   
+     return (
+       <Form onFinish={onFinish}>
+         <Form.Item name="username" rules={[{ required: true }]}>
+           <Input />
+         </Form.Item>
+       </Form>
+     );
+   };
+   ```
+
+   在 V3 中需要使用到 Form.create() 方法，再利用 getFieldDecorator 来接收字段对象和验证规则；
+   
+   在 V4 中舍弃了 Form.create() 方法，利用 onFinish() 方法进行简化验证过程，当验证成功并返回到相对应处理函数时便可直接获取到 values，其存放了当前表单的基本数据，按需获取表单对应字段即可。
