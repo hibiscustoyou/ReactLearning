@@ -277,4 +277,50 @@ package.json
    }
    ```
 
-5. 
+
+### 六、封装 ajax 请求模块
+
+1. 引入依赖库
+
+   ```
+   yarn add axios
+   ```
+
+2. 封装 ajax 函数
+
+   ```jsx
+   import axios from 'axios';
+   
+   export default function ajax(url, data={}, type='GET') {
+       if (type==='GET' || type==='get') {
+           return axios.get(url, {
+               params: data
+           });
+       } else {
+           return axios.post(url, data);
+       }
+   }
+   ```
+
+3. 封装 api 函数
+
+   ```jsx
+   import ajax from "./ajax";
+   
+   // 登陆函数
+   export const reqLogin = (username, password) => ajax('/login', {username, password}, 'POST');
+   ```
+
+4. 在 package.json 中添加代理
+
+   通过在 package.json 文件中配置代理可以解决 ajax 请求跨域问题，利用代理进行转发请求
+
+   ```json
+   {
+   	...,
+       "proxy": "http://localhost:5000"
+   }
+   ```
+
+   
+

@@ -2,14 +2,20 @@
 /.idea
 # dependencies
 /WebManager/react_admin_client/node_modules
+/WebManager/admin_server_final/node_modules
 /.pnp
 .pnp.js
 
 # testing
 /WebManager/react_admin_client/coverage
+/WebManager/admin_server_final/coverage
 
 # production
 /WebManager/react_admin_client/build
+/WebManager/admin_server_final/build
+
+# db
+/WebManager/react_db
 
 # misc
 .DS_Store

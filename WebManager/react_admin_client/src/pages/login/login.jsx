@@ -4,6 +4,7 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
 import './login.less'
 import logo from './images/logo.jpg'
+import {reqLogin} from '../../api/api'
 
 /*
 * 登陆的路由组件
@@ -16,6 +17,12 @@ export default class Login extends Component {
         const onFinish = values => {
             // 成功的返回
             console.log('Received values of form: ', values);
+            const {username, password} = values;  // 类似 python 的元组解包
+            reqLogin(username, password).then(r => {
+                console.log('ajax 成功：', r.data);
+            }).catch(e => {
+                console.log('ajax 失败：', e);
+            });
         };
         const onFinishFailed = errorInfo => {
             // 失败的返回
