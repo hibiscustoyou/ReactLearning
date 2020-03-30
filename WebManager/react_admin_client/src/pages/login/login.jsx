@@ -5,7 +5,8 @@ import './login.less'
 import logo from './images/logo.jpg'
 import {reqLogin} from '../../api/api'
 import MemoryUtils from '../../utils/memory_utils';
-// import message from 'message';
+import StorageUtils from '../../utils/storage_utils';
+import {Redirect} from "react-router-dom";
 
 /*
 * 登陆的路由组件
@@ -15,6 +16,11 @@ import MemoryUtils from '../../utils/memory_utils';
 
 export default class Login extends Component {
     render() {
+        const user = MemoryUtils.user;
+        if (user && user._id) {
+            return <Redirect to='/' />
+        }
+
         const onFinish = async (values) => {
             // 成功的返回
             // console.log('Received values of form: ', values);
@@ -32,7 +38,9 @@ export default class Login extends Component {
                 if (result.status === 0) {
                     message.success('登陆成功');
 
-                    MemoryUtils.user = result.data;
+                    const user = result.data;
+                    MemoryUtils.user = user;  // 存入内存
+                    StorageUtils.saveUser(user);  // 存入本地
 
                     this.props.history.replace('/');
                 } else {

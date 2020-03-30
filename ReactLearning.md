@@ -369,3 +369,36 @@ package.json
      \> async：写在异步函数 (values) 定义左侧
 
      \> await：写在返回 promise 表达式 reqLogin() 左侧，只返回 promise 异步执行成功的 数据
+
+### 七、持久化登陆
+
+1. 使用 store 库封装 localStorage
+
+   ```
+   yarn add store
+   ```
+
+2. store 基本使用
+
+   ```jsx
+   import store from 'store';
+   
+   // Store current user
+   store.set('user', { name:'Marcus' })
+   
+   // Get current user
+   store.get('user')
+   
+   // Remove current user
+   store.remove('user')
+   
+   // Clear all keys
+   store.clearAll()
+   
+   // Loop over all stored values
+   store.each(function(value, key) {
+   	console.log(key, '==', value)
+   })
+   ```
+
+   

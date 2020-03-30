@@ -1,6 +1,7 @@
 import React, {Component} from "react";
-import MemoryUtils from '../../utils/memory_utils';
 import { Redirect } from "react-router-dom";
+
+import MemoryUtils from '../../utils/memory_utils';
 
 /*
 * 后台管理的路由组件
