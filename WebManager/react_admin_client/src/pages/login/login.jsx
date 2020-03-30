@@ -1,10 +1,11 @@
 import React, {Component} from "react";
-import { Form, Input, Button } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
-
+import {Button, Form, Input, message} from 'antd';
+import {LockOutlined, UserOutlined} from '@ant-design/icons';
 import './login.less'
 import logo from './images/logo.jpg'
 import {reqLogin} from '../../api/api'
+import MemoryUtils from '../../utils/memory_utils';
+// import message from 'message';
 
 /*
 * 登陆的路由组件
@@ -14,15 +15,32 @@ import {reqLogin} from '../../api/api'
 
 export default class Login extends Component {
     render() {
-        const onFinish = values => {
+        const onFinish = async (values) => {
             // 成功的返回
-            console.log('Received values of form: ', values);
+            // console.log('Received values of form: ', values);
             const {username, password} = values;  // 类似 python 的元组解包
-            reqLogin(username, password).then(r => {
+
+            /*reqLogin(username, password).then(r => {
                 console.log('ajax 成功：', r.data);
             }).catch(e => {
                 console.log('ajax 失败：', e);
-            });
+            });*/
+
+            try {
+                // console.log('请求成功：', res.data);
+                const result = await reqLogin(username, password);
+                if (result.status === 0) {
+                    message.success('登陆成功');
+
+                    MemoryUtils.user = result.data;
+
+                    this.props.history.replace('/');
+                } else {
+                    message.error(result.msg);
+                }
+            } catch (e) {
+                console.log('请求失败：', e);
+            }
         };
         const onFinishFailed = errorInfo => {
             // 失败的返回
@@ -60,8 +78,8 @@ export default class Login extends Component {
 
                                 ({ getFieldValue }) => ({
                                     validator(rule, value) {
-                                        console.log('rule:', rule);
-                                        console.log('value:', value);
+                                        // console.log('rule:', rule);
+                                        // console.log('value:', value);
                                         if (!value) {
                                             return Promise.reject('密码不能为空');
                                         } else if (value.length < 3) {

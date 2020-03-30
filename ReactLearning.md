@@ -311,7 +311,29 @@ package.json
    export const reqLogin = (username, password) => ajax('/login', {username, password}, 'POST');
    ```
 
-4. 在 package.json 中添加代理
+4. 在 login.jsx 组件中使用 reqLogin()
+
+   .then()：成功调用
+
+   .catch()：失败调用
+   
+   ```jsx
+   render() {
+       const onFinish = values => {
+           // 成功的返回
+        console.log('Received values of form: ', values);
+           const {username, password} = values;  // 类似 python 的元组解包
+           reqLogin(username, password).then(r => {
+               console.log('ajax 成功：', r.data);
+           }).catch(e => {
+               console.log('ajax 失败：', e);
+           });
+       };
+       ...
+   }
+   ```
+   
+5. 在 package.json 中添加代理
 
    通过在 package.json 文件中配置代理可以解决 ajax 请求跨域问题，利用代理进行转发请求
 
@@ -322,5 +344,28 @@ package.json
    }
    ```
 
-   
+6. 使用 async 和 await 简化 promise 对象的使用
 
+   + 如何简化与作用？
+
+     \> 不再使用 .then() 函数来指定 **成功** / **失败** 的回调函数
+
+     \> 以同步编码方式（无回调函数）实现异步流程
+
+   + 语法
+
+     ```jsx
+     const onFinish = async (values) => {
+         const {username, password} = values;  // 类似 python 的元组解包
+         try {
+             const res = await reqLogin(username, password);
+             console.log('请求成功：', res.data);
+         } catch (e) {
+             console.log('请求失败：', e);
+         }
+     };
+     ```
+
+     \> async：写在异步函数 (values) 定义左侧
+
+     \> await：写在返回 promise 表达式 reqLogin() 左侧，只返回 promise 异步执行成功的 数据
