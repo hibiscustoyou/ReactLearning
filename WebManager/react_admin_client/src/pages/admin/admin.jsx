@@ -1,7 +1,12 @@
 import React, {Component} from "react";
 import { Redirect } from "react-router-dom";
+import { Layout } from 'antd';
 
 import MemoryUtils from '../../utils/memory_utils';
+import LeftNav from "../../component/left-nav";
+import HeaderNav from "../../component/header"
+
+const { Footer, Sider, Content } = Layout;
 
 /*
 * 后台管理的路由组件
@@ -16,9 +21,16 @@ export default class Admin extends Component {
         }
 
         return (
-            <div>
-                Hello {user.username}
-            </div>
+            <Layout style={{height:'100%'}}>
+                <Sider>
+                    <LeftNav />
+                </Sider>
+                <Layout>
+                    <HeaderNav>Header</HeaderNav>
+                    <Content style={{backgroundColor: 'white'}}>Content</Content>
+                    <Footer style={{textAlign:'center', color:'#cccccc'}}>推荐使用 Chrome 浏览器</Footer>
+                </Layout>
+            </Layout>
         )
     }
 }

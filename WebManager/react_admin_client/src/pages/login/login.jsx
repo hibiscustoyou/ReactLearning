@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {Button, Form, Input, message} from 'antd';
 import {LockOutlined, UserOutlined} from '@ant-design/icons';
 import './login.less'
-import logo from './images/logo.jpg'
+import logo from '../../assets/images/logo.png'
 import {reqLogin} from '../../api/api'
 import MemoryUtils from '../../utils/memory_utils';
 import StorageUtils from '../../utils/storage_utils';
@@ -18,7 +18,7 @@ export default class Login extends Component {
     render() {
         const user = MemoryUtils.user;
         if (user && user._id) {
-            return <Redirect to='/' />
+            return <Redirect to='/home' />
         }
 
         const onFinish = async (values) => {
@@ -42,7 +42,7 @@ export default class Login extends Component {
                     MemoryUtils.user = user;  // 存入内存
                     StorageUtils.saveUser(user);  // 存入本地
 
-                    this.props.history.replace('/');
+                    this.props.history.replace('/home');
                 } else {
                     message.error(result.msg);
                 }
