@@ -1,17 +1,65 @@
 import React, {Component} from "react";
 import {Link} from "react-router-dom";
 import { Menu } from 'antd';
-import {
-    PieChartOutlined,
-    MailOutlined,
-} from '@ant-design/icons';
+import * as icons from '@ant-design/icons';
+import Dexie from 'dexie';
 
 import './index.less';
 import logo from '../../assets/images/logo.png';
+import MenuConfig from "../../config/menu_config";
 
 const { SubMenu } = Menu;
 
+const dict = {
+    "<HomeOutlined />": <icons.HomeOutlined />,
+    "<AppstoreOutlined />": <icons.AppstoreOutlined />,
+    "<BarsOutlined />": <icons.BarsOutlined />,
+    "<ToolOutlined />": <icons.ToolOutlined />,
+    "<UserOutlined />": <icons.UserOutlined />,
+    "<SafetyOutlined />": <icons.SafetyOutlined />,
+    "<FundOutlined />": <icons.FundOutlined />,
+    "<BarChartOutlined />": <icons.BarChartOutlined />,
+    "<LineChartOutlined />": <icons.LineChartOutlined />,
+    "<PieChartOutlined />": <icons.PieChartOutlined />,
+    "<MenuOutlined />": <icons.MenuOutlined />,
+}
+
 export default class LeftNav extends Component {
+    getMenuNodes = (MenuConfig) => {
+      return MenuConfig.map(item => {
+          if (!item.children) {
+              // console.log(item.icon);
+              return (
+                  <Menu.Item key={item.key}>
+                      <Link to={item.key}>
+                          {dict[item.icon]}
+                          {/*<PieChartOutlined />*/}
+                          <span>{item.title}</span>
+                      </Link>
+                  </Menu.Item>
+              )
+          } else {
+              return (
+                  <SubMenu
+                      key={item.key}
+                      title={
+                          <span>
+                                {dict[item.icon]}
+                                <span>{item.title}</span>
+                            </span>
+                      }
+                  >
+                      {this.getMenuNodes(item.children)}
+                  </SubMenu>
+              )
+          }
+      })
+    };
+
+    UNSAFE_componentWillMount () {
+        this.menuNodes = this.getMenuNodes(MenuConfig);
+    }
+
     render() {
         return (
             <div className='left-nav'>
@@ -24,32 +72,7 @@ export default class LeftNav extends Component {
                     mode="inline"
                     theme="dark"
                 >
-                    <Menu.Item key="1">
-                        <PieChartOutlined />
-                        <span>首页</span>
-                    </Menu.Item>
-                    <SubMenu
-                        key="sub1"
-                        title={
-                            <span>
-                                <MailOutlined />
-                                <span>商品</span>
-                            </span>
-                        }
-                    >
-                        <Menu.Item key="5">
-                            <span>
-                                <MailOutlined />
-                                <span>品类管理</span>
-                            </span>
-                        </Menu.Item>
-                        <Menu.Item key="6">
-                            <span>
-                                <MailOutlined />
-                                <span>商品管理</span>
-                            </span>
-                        </Menu.Item>
-                    </SubMenu>
+                    {this.menuNodes}
                 </Menu>
             </div>
         )
