@@ -1,3 +1,46 @@
 .header-nav {
     height: 80px;
+    background-color: white;
+    .header-nav-top {
+        height: 40px;
+        text-align: right;
+        line-height: 40px;
+        padding-right: 30px;
+        border-bottom: 1px solid green;
+        span {
+            margin-right: 10px;
+        }
+    }
+    .header-nav-bottom {
+        height: 40px;
+        display: flex;
+        align-items: center;
+        .header-nav-bottom-left {
+            position: relative;
+            width: 20%;
+            text-align: center;
+            font-size: 20px;
+            &::after {
+                content: '';
+                position: absolute;
+                right: 50%;
+                top: 100%;
+                transform: translateX(50%);
+                border-top: 20px solid white;
+                border-right: 20px solid transparent;
+                border-bottom: 20px solid transparent;
+                border-left: 20px solid transparent;
+            }
+        }
+        .header-nav-bottom-right {
+            width: 75%;
+            text-align: right;
+            margin-right: 30px;
+            img {
+                margin: 0 15px;
+                width: 30px;
+                height: 20px;
+            }
+        }
+    }
 }

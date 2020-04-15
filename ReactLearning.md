@@ -401,4 +401,117 @@ package.json
    })
    ```
 
+
+### 八、添加左侧菜单栏
+
+1. 动态渲染菜单列表
+
+   ```js
+   /*
+   * /src/config/menu_config.js
+   * 新增菜单配置页，需要添加其他菜单功能只需在此数组继续增加
+   * 需要注意的一个点是组件对象不能作为数值直接传递给前端页面进行渲染，
+   * 因此需要传递对应的组件字符串，再在前端页面利用字典将组件字符串进行转化为组件
+   */
+   const MenuConfig = [
+       {
+           title: '首页',  // 菜单标题名称
+           key: '/home',  // 对应的path
+           icon: "<HomeOutlined />",  // 图标名称
+           isPublic: true,  // 公开的
+       },
+       {
+           title: '商品',
+           key: '/products',
+           icon: "<AppstoreOutlined />",
+           children: [  // 子菜单列表
+               {
+                   title: '品类管理',
+                   key: '/category',
+                   icon: "<BarsOutlined />"
+               },
+               {
+                   title: '商品管理',
+                   key: '/product',
+                   icon: "<ToolOutlined />"
+               },
+           ]
+       },
+       ...
+   ];
    
+   export default MenuConfig;
+   ```
+
+2. 添加左侧菜单跳转路由以及优化 LeftNav 组件逻辑
+
+   ```jsx
+   /*
+   * /src/component/left-nav/index.jsx
+   */
+   import * as icons from '@ant-design/icons';
+   const dict = {
+       "<HomeOutlined />": <icons.HomeOutlined />,
+       "<AppstoreOutlined />": <icons.AppstoreOutlined />,
+       "<BarsOutlined />": <icons.BarsOutlined />,
+       "<ToolOutlined />": <icons.ToolOutlined />,
+       "<UserOutlined />": <icons.UserOutlined />,
+       "<SafetyOutlined />": <icons.SafetyOutlined />,
+       "<FundOutlined />": <icons.FundOutlined />,
+       "<BarChartOutlined />": <icons.BarChartOutlined />,
+       "<LineChartOutlined />": <icons.LineChartOutlined />,
+       "<PieChartOutlined />": <icons.PieChartOutlined />,
+       "<MenuOutlined />": <icons.MenuOutlined />,
+   }
+   
+   ...
+   
+   /*
+   * 根据 MenuConfig 生成对应的标签数组
+   * 使用 reduce + 递归
+   */
+   getMenuNodes = (MenuConfig) => {
+       return MenuConfig.reduce((pre, item) => {
+           // 获取当前请求路由路径
+           const currentPath = this.props.location.pathname;
+   
+           if (!item.children) {
+               // 向 pre 添加 <Menu.Item>
+               pre.push((
+                   <Menu.Item key={item.key}>
+                       <Link to={item.key}>
+                           {dict[item.icon]}
+                           {/*<PieChartOutlined />*/}
+                           <span>{item.title}</span>
+                       </Link>
+                   </Menu.Item>
+               ))
+           } else {
+               const childrenItem = item.children.find(childrenItem => childrenItem.key===currentPath);
+               if (childrenItem) {
+                   this.openKey = item.key;
+               }
+   
+               // 向 pre 添加 <SubMenu>
+               pre.push((
+                   <SubMenu
+                       key={item.key}
+                       title={
+                           <span>
+                               {dict[item.icon]}
+                               <span>{item.title}</span>
+                           </span>
+                       }
+                       >
+                       {this.getMenuNodes(item.children)}
+                   </SubMenu>
+               ))
+           }
+           return pre
+       }, [])
+   }
+   ```
+
+### 九、添加 Header  组件
+
+1. 
