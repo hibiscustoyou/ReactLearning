@@ -26,11 +26,13 @@ export default class Login extends Component {
             // console.log('Received values of form: ', values);
             const {username, password} = values;  // 类似 python 的元组解包
 
-            /*reqLogin(username, password).then(r => {
+            /*
+            reqLogin(username, password).then(r => {
                 console.log('ajax 成功：', r.data);
             }).catch(e => {
                 console.log('ajax 失败：', e);
-            });*/
+            });
+            */
 
             try {
                 // console.log('请求成功：', res.data);

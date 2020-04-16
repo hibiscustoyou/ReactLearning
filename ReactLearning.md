@@ -512,6 +512,46 @@ package.json
    }
    ```
 
-### 九、添加 Header  组件
+### 九、Api 接口封装 json
 
-1. 
+1. 跨域问题：
+
+   引入 http-proxy-middleware 库添加多个转发代理
+
+   ```
+   yarn add http-proxy-middleware
+   ```
+
+   新建 /src/setupProxy.js
+
+   ```js
+   const { createProxyMiddleware } = require('http-proxy-middleware');
+   
+   module.exports = function(app) {
+       app.use(
+           '/weather',
+           createProxyMiddleware({
+               target: 'http://111.230.151.193:5001',
+               changeOrigin: true,
+               secure: false
+           })
+       );
+   };
+   ```
+
+   使用转发代理
+
+   ```js
+   export const reqWeather = (location) => {
+       return new Promise((resolve, reject) => {
+           const url = `/weather?district=${location}&data_type=now`;  // 此处在配置了转发代理后不能再写上原本地址
+           axios.get(url).then(function (response) {
+               console.log(response);
+           }).catch(function (error) {
+               console.log('weather api error', error);
+           });
+       })    
+   }
+   ```
+
+2. 动态显示当前时间和天气

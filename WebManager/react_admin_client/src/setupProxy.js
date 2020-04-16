@@ -4,7 +4,7 @@ module.exports = function(app) {
     app.use(
         '/weather',
         createProxyMiddleware({
-            target: 'http://localhost:5003',
+            target: 'http://111.230.151.193:5001',
             changeOrigin: true,
             secure: false
         })
