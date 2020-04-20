@@ -12,6 +12,7 @@
 |	> utils			// 工具模块
 |	App.js			// 应用根组件
 |	index.js		// 应用入口
+|	setupProxy.js	 // 转发代理设置
 config-overrides.js
 package.json
 ```
@@ -30,7 +31,7 @@ package.json
    + 下载 3 个依赖组件
 
      ```
-     yarn add react-app-rewied customize-cra babel-plugin-import
+     yarn add react-app-rewired customize-cra babel-plugin-import
      ```
 
    + 编写加载配置文件 config-overrides.js
@@ -52,19 +53,19 @@ package.json
    + 修改 package.json 的 script 配置
 
      ```json
-       // "scripts": {
-       //   "start": "react-scripts start",
-       //   "build": "react-scripts build",
-       //   "test": "react-scripts test",
-       //   "eject": "react-scripts eject"
-       // },
-       
-         "scripts": {
-             "start": "react-app-rewired start",
-             "build": "react-app-rewired build",
-             "test": "react-app-rewired test",
-             "eject": "react-app-rewired eject"
-           },
+     // "scripts": {
+     //   "start": "react-scripts start",
+     //   "build": "react-scripts build",
+     //   "test": "react-scripts test",
+     //   "eject": "react-scripts eject"
+     // },
+     
+     "scripts": {
+         "start": "react-app-rewired start",
+         "build": "react-app-rewired build",
+         "test": "react-app-rewired test",
+         "eject": "react-app-rewired eject"
+     },
      ```
 
 3. 自定义 antd 主题
@@ -72,7 +73,7 @@ package.json
    + 下载工具包
 
      ```
-     yarn ad less less-loader
+     yarn add less less-loader
      ```
 
    + 修改 config-overrides.js
