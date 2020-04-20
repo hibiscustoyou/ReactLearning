@@ -4,8 +4,10 @@ import {withRouter} from "react-router-dom"
 import {Modal} from "antd";
 import {reqWeather} from "../../api/api";
 import memory_utils from "../../utils/memory_utils";
+import storage_utils from "../../utils/storage_utils";
 import memu_config from "../../config/menu_config";
 import './index.less';
+import ExclamationCircleOutlined from "@ant-design/icons/lib/icons/ExclamationCircleOutlined";
 
 class HeaderNav extends Component {
     state = {
@@ -16,7 +18,7 @@ class HeaderNav extends Component {
 
     getTime = () => {
         // 每隔 1s 获取当前时间并更新 currentTime
-        setInterval(() => {
+        this.setIntervalId = setInterval(() => {
             const currentTime = moment().format("YYYY-MM-DD HH:mm:ss");
             this.setState({currentTime})
         }, 1000)
@@ -44,6 +46,22 @@ class HeaderNav extends Component {
         return title;
     }
 
+    logout = () => {
+        Modal.confirm({
+            content: '确定退出?',
+            icon: <ExclamationCircleOutlined />,
+            onOk: () => {
+                console.log('OK');
+                storage_utils.removeUser();
+                memory_utils.user = {};
+                this.props.history.replace('/login');
+            },
+            // onCancel() {
+            //     console.log('Cancel');
+            // },
+        })
+    }
+
     /*
     * 第一次 render() 之后执行一次
     * 一般在此执行异步操作：ajax 请求 / 启动定时器
@@ -51,6 +69,18 @@ class HeaderNav extends Component {
     componentDidMount() {
         this.getTime();
         this.getWeather();
+    }
+
+    /*
+    * 在组件销毁的时候将异步方法撤销
+    */
+    componentWillUnmount() {
+        clearInterval(this.setIntervalId);  // 关闭定时器
+
+        /*
+        * 通用解法
+        * this.setState = (state, callback) => {};
+        * */
     }
 
     render() {
@@ -62,7 +92,7 @@ class HeaderNav extends Component {
             <div className='header-nav'>
                 <div className="header-nav-top">
                     <span>欢迎，{username}</span>
-                    <a href="#">退出</a>
+                    <a href="#" onClick={this.logout}>退出</a>
                 </div>
                 <div className="header-nav-bottom">
                     <div className="header-nav-bottom-left">

@@ -3,9 +3,9 @@
 * 每个函数的返回值都为 promise
 */
 
-import ajax from "./ajax";
 import axios from "axios";
 import {message} from "antd";
+import ajax from "./ajax";
 
 // 登陆函数
 export const reqLogin = (username, password) => ajax('/login', {username, password}, 'POST');
