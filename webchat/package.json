@@ -9,7 +9,7 @@
     "antd": "^4.1.4",
     "babel-plugin-import": "^1.13.0",
     "customize-cra": "^0.9.1",
-    "dexie": "^2.0.4",
+    "dexie": "^3.2.2",
     "less": "^3.11.1",
     "less-loader": "^5.0.0",
     "react": "^16.13.1",
